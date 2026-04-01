@@ -20,12 +20,19 @@
                     <!-- Add "active" class when you're on that page" -->
                     <a class="nav-link active" href="/conduit/">Home</a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/conduit/login.php">Sign in</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/conduit/register.php">Sign up</a>
-                </li>
+               <?php
+                session_start();
+                if (!isset($_SESSION['user_id'])) {
+                    // user is logged in, show profile and logout links
+                    echo '<li class="nav-item"><a class="nav-link" href="/conduit/create-article.php"> <i class="ion-compose"></i>&nbsp;New Article </a></li>';
+                    echo '<li class="nav-item"><a class="nav-link" href="/conduit/settings.php"> <i class="ion-gear-a"></i>&nbsp;Settings </a></li>';
+                    echo '<li class="nav-item"> <a class="nav-link" href="/conduit/profile.php"><img src="/conduit/assets/img/default-avatar.svg" class="user-pic" />Eric Simons</a></li>';
+                } else {
+                    // user is not logged in, show login and register links
+                    echo '<li class="nav-item"><a class="nav-link" href="/conduit/login.php">Sign in</a></li>';
+                    echo '<li class="nav-item"><a class="nav-link" href="/conduit/register.php">Sign up</a></li>';
+                }
+                ?> 
             </ul>
         </div>
     </nav>
