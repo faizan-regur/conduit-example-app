@@ -9,7 +9,7 @@ include 'includes/header.php';
 <?php
 session_start();
 if (!isset($_SESSION['user_id'])) {
-    header('Location: /conduit/login.php');
+    header('Location: /conduit/login');
     exit();
 }
 ?>
