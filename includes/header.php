@@ -22,7 +22,7 @@
                 </li>
                <?php
                 session_start();
-                if (!isset($_SESSION['user_id'])) {
+                if (isset($_SESSION['user_id'])) {
                     // user is logged in, show profile and logout links
                     echo '<li class="nav-item"><a class="nav-link" href="/conduit/create-article.php"> <i class="ion-compose"></i>&nbsp;New Article </a></li>';
                     echo '<li class="nav-item"><a class="nav-link" href="/conduit/settings.php"> <i class="ion-gear-a"></i>&nbsp;Settings </a></li>';
