@@ -4,3 +4,4 @@ RewriteBase /conduit/
 RewriteRule ^$ frontend/index.html [L]
 RewriteRule ^login$ frontend/login.html [L]
 RewriteRule ^register$ frontend/register.html [L]
+RewriteRule ^api/(.*)$ backend/public/index.php [QSA,L]
