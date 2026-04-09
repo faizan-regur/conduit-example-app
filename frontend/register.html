@@ -44,17 +44,17 @@
                         <li>That email is already taken</li>
                     </ul>
 
-                    <form>
+                    <form id="register-form">
                         <fieldset class="form-group">
-                            <input class="form-control form-control-lg" type="text" placeholder="Username" />
+                            <input class="form-control form-control-lg" type="text" placeholder="Username" id="username"/>
                         </fieldset>
                         <fieldset class="form-group">
-                            <input class="form-control form-control-lg" type="text" placeholder="Email" />
+                            <input class="form-control form-control-lg" type="text" placeholder="Email" id="email" />
                         </fieldset>
                         <fieldset class="form-group">
-                            <input class="form-control form-control-lg" type="password" placeholder="Password" />
+                            <input class="form-control form-control-lg" type="password" placeholder="Password" id="password"/>
                         </fieldset>
-                        <button class="btn btn-lg btn-primary pull-xs-right">Sign up</button>
+                        <button type="submit" class="btn btn-lg btn-primary pull-xs-right">Sign up</button>
                     </form>
                 </div>
             </div>
@@ -70,5 +70,5 @@
         </div>
     </footer>
 </body>
-
+<script src="/conduit/frontend/js/auth.js"></script>
 </html>
