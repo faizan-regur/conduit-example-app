@@ -1,15 +1,14 @@
 <?php
-define('DBSERVER', 'localhost'); // Database server
-define('DBUSERNAME', 'root'); // Database username
-define('DBPASSWORD', ''); // Database password
-define('DBNAME', 'rw_db'); // Database name
+$host = "localhost";
+$db_name = "conduit";
+$username = "root";
+$password = "";
 
+$conn = new mysqli($host, $username, $password, $db_name);
 
-/* connect to MySQL database */
-$db = mysqli_connect(DBSERVER, DBUSERNAME, DBPASSWORD, DBNAME);
-
-// Check db connection
-if($db === false){
-    die("Error: connection error. " . mysqli_connect_error());
+if ($conn->connect_error) {
+    http_response_code(500);
+    echo json_encode(["error" => "Database connection failed"]);
+    exit;
 }
-
+?>
