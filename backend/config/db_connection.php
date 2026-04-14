@@ -11,4 +11,3 @@ if ($conn->connect_error) {
     echo json_encode(["error" => "Database connection failed"]);
     exit;
 }
-?>

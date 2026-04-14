@@ -48,4 +48,3 @@ if ($conn->query($query)) {
     echo json_encode(["error" => "Failed to create user"]);
 }
 
-?>
