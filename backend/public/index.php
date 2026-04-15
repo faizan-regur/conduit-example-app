@@ -3,12 +3,23 @@ $request = $_SERVER['REQUEST_URI'];
 $method = $_SERVER['REQUEST_METHOD'];
 
 header("Content-Type: application/json");
-header("Access-Control-Allow-Origin: *");
-header("Access-Control-Allow-Methods: POST, GET, OPTIONS");
-require_once '../config/db_connection.php';
+include '../config/db_connection.php';
 
-if ($request === "/conduit/api/users" && $method === "POST") {
-    $data = json_decode(file_get_contents("php://input"), true);
+$data = json_decode(file_get_contents("php://input"), true);
+
+switch ($method) {
+    case 'GET':
+        handleGet($conn);
+        break;
+    case 'POST':
+        handlePost($conn, $data);
+        break;
+    default:
+        echo json_encode(['message' => 'Invalid request method']);
+        break;
+}
+
+function handlePost($conn, $data) {
 
     // Validation
     if (
@@ -51,7 +62,7 @@ if ($request === "/conduit/api/users" && $method === "POST") {
     }
 }
 
-if($request === '/conduit/api/user' && $method === 'GET') {
+function handleGet($conn) {
 
     $query = "SELECT id, username, email FROM users";
     $result = $conn->query($query);
@@ -80,39 +91,39 @@ if($request === '/conduit/api/user' && $method === 'GET') {
     echo json_encode(["users" => $users]);
 }
 
-if ($request === '/conduit/api/users/login' && $method === 'POST') {
-    $data = json_decode(file_get_contents("php://input"), true);
-    // Validation
-    if (
-        empty($data['user']['email']) ||
-        empty($data['user']['password'])
-    ) {
-        http_response_code(422);
-        echo json_encode(["error" => "All fields are required"]);
-        exit;
-    }
+// if ($request === '/conduit/api/users/login' && $method === 'POST') {
+//     $input = json_decode(file_get_contents("php://input"), true);
+//     // Validation
+//     if (
+//         empty($input['user']['email']) ||
+//         empty($input['user']['password'])
+//     ) {
+//         http_response_code(422);
+//         echo json_encode(["error" => "All fields are required"]);
+//         exit;
+//     }
 
-    $email = $conn->real_escape_string($data['user']['email']);
-    $password = $data['user']['password'];
+//     $email = $conn->real_escape_string($input['user']['email']);
+//     $password = $input['user']['password'];
 
-    $check = $conn->query("SELECT id, username, email, password FROM users WHERE email='$email' LIMIT 1");
-    if ($check && $check->num_rows > 0) {
-        $user = $check->fetch_assoc();
+//     $check = $conn->query("SELECT id, username, email, password FROM users WHERE email='$email' LIMIT 1");
+//     if ($check && $check->num_rows > 0) {
+//         $user = $check->fetch_assoc();
 
-        if (password_verify($password, $user['password'])) {
-            echo json_encode([
-                "user" => [
-                    "id" => $user['id'],
-                    "username" => $user['username'],
-                    "email" => $user['email']
-                ]
-            ]);
-        } else {
-            http_response_code(401);
-            echo json_encode(["error" => "Incorrect password"]);
-        }
-    } else {
-        http_response_code(404);
-        echo json_encode(["error" => "User not found"]);
-    }
-}
+//         if (password_verify($password, $user['password'])) {
+//             echo json_encode([
+//                 "user" => [
+//                     "id" => $user['id'],
+//                     "username" => $user['username'],
+//                     "email" => $user['email']
+//                 ]
+//             ]);
+//         } else {
+//             http_response_code(401);
+//             echo json_encode(["error" => "Incorrect password"]);
+//         }
+//     } else {
+//         http_response_code(404);
+//         echo json_encode(["error" => "User not found"]);
+//     }
+// }
