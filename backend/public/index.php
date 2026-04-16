@@ -62,19 +62,18 @@ function handlePost($conn, $data, $request) {
         }
     }
     else if ($request === '/conduit/api/users/login'){
-        $input = json_decode(file_get_contents("php://input"), true);
         // Validation
         if (
-            empty($input['user']['email']) ||
-            empty($input['user']['password'])
+            empty($data['user']['email']) ||
+            empty($data['user']['password'])
         ) {
             http_response_code(422);
             echo json_encode(["error" => "All fields are required"]);
             exit;
         }
     
-        $email = $conn->real_escape_string($input['user']['email']);
-        $password = $input['user']['password'];
+        $email = $conn->real_escape_string($data['user']['email']);
+        $password = $data['user']['password'];
     
         $check = $conn->query("SELECT id, username, email, password FROM users WHERE email='$email' LIMIT 1");
         if ($check && $check->num_rows > 0) {
