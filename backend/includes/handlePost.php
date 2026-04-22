@@ -71,4 +71,10 @@ function handlePost($conn, $data, $request) {
             echo json_encode(["error" => "User not found"]);
         }
     }
+    
+    // Follow User
+    $username = getUserName($request);
+    if($request === '/conduit/api/profiles/'. $username .'/follow'){
+        
+    }
 }
