@@ -7,6 +7,7 @@ include '../config/db_connection.php';
 include '../includes/handleGet.php';
 include '../includes/handlePost.php';
 include '../includes/handlePut.php';
+include '../includes/getUserName.php';
 
 
 $data = json_decode(file_get_contents("php://input"), true);
