@@ -1,4 +1,5 @@
 <?php
+include '../includes/getUserName.php';
 
 function handleGet($conn, $request) {
     if ($request === '/conduit/api/user'){
@@ -30,16 +31,8 @@ function handleGet($conn, $request) {
     }
     // Get Profile
     if (str_contains($request, '/conduit/api/profiles')) {
-        $path = parse_url($request, PHP_URL_PATH);
-        $segments = explode('/', trim($path, '/'));
-        $username = end($segments);
-        $username = urldecode($username);
-
-        if (!$username) {
-            http_response_code(400);
-            echo json_encode(["error" => "Username is required"]);
-            exit;
-        }
+        
+        $username = getUserName($request);
 
         $stmt = $conn->prepare("SELECT username, bio, image, following FROM users WHERE username = ? LIMIT 1");
         if ($stmt === false) {
