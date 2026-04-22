@@ -41,7 +41,7 @@ function handleGet($conn, $request) {
             exit;
         }
 
-        $stmt = $conn->prepare("SELECT id, username, email, bio, image, created_at FROM users WHERE username = ? LIMIT 1");
+        $stmt = $conn->prepare("SELECT username, bio, image, following FROM users WHERE username = ? LIMIT 1");
         if ($stmt === false) {
             http_response_code(500);
             echo json_encode(["error" => "Database query preparation failed"]);
@@ -70,7 +70,7 @@ function handleGet($conn, $request) {
         }
 
         $row = $check->fetch_assoc();
-        echo json_encode(["user" => $row]);
+        echo json_encode(["profile" => $row]);
         $stmt->close();
     }
 }
