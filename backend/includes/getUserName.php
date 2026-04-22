@@ -3,7 +3,7 @@
 function getUserName($request){
     $path = parse_url($request, PHP_URL_PATH);
     $segments = explode('/', trim($path, '/'));
-    $username = end($segments);
+    $username = $segments[3];
     $username = urldecode($username);
     
     if (!$username) {
