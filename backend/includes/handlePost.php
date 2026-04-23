@@ -85,6 +85,10 @@ function handlePost($conn, $data, $request) {
                         "token" => $jwt
                     ]
                 ]);
+                // start session and store user info
+                session_start();
+                $_SESSION['user_id'] = $user['id'];
+                $_SESSION['email'] = $user['email'];
             } else {
                 http_response_code(401);
                 echo json_encode(["error" => "Incorrect password"]);
