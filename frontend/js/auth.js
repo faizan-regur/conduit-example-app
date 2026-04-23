@@ -15,6 +15,7 @@ document.addEventListener("DOMContentLoaded", () => {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
+            "Authorization": `Token ${localStorage.getItem("token") || ""}`,
           },
           body: JSON.stringify({
             user: { username, email, password },
