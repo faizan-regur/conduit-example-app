@@ -1,4 +1,5 @@
 <?php
+require_once __DIR__ . '/../vendor/autoload.php';
 $request = $_SERVER['REQUEST_URI'];
 $method = $_SERVER['REQUEST_METHOD'];
 
@@ -8,6 +9,7 @@ include '../includes/handleGet.php';
 include '../includes/handlePost.php';
 include '../includes/handlePut.php';
 include '../includes/getUserName.php';
+include '../config/config.php';
 
 
 $data = json_decode(file_get_contents("php://input"), true);

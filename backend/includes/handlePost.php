@@ -1,6 +1,11 @@
 <?php
+use Firebase\JWT\JWT;
+
 
 function handlePost($conn, $data, $request) {
+    global $secret_key;
+    global $issuer;
+
     if ($request === '/conduit/api/users'){
         // Validation
         if (
@@ -61,7 +66,25 @@ function handlePost($conn, $data, $request) {
             $user = $check->fetch_assoc();
     
             if (password_verify($password, $user['password'])) {
-                echo json_encode(["message" => "Login Successfully"]);
+                $payload = [
+                "iss" => $issuer,
+                "iat" => time(),
+                "exp" => time() + (60 * 60), // 1 hour
+                "data" => [
+                    "id" => $user['id'],
+                    "email" => $user['email']
+                ]
+                ];
+                $jwt = JWT::encode($payload, $secret_key, 'HS256');
+    
+                echo json_encode([
+                    "user" => [
+                        "id" => $user['id'],
+                        "username" => $user['username'],
+                        "email" => $user['email'],
+                        "token" => $jwt
+                    ]
+                ]);
             } else {
                 http_response_code(401);
                 echo json_encode(["error" => "Incorrect password"]);
