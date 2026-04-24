@@ -1,6 +1,10 @@
 <?php
+use Firebase\JWT\JWT;
+
 
 function handlePost($conn, $data, $request) {
+    global $secret_key;
+    global $issuer;
 
     if ($request === '/conduit/api/users'){
         // Validation
