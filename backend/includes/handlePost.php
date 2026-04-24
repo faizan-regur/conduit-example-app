@@ -1,10 +1,6 @@
 <?php
-use Firebase\JWT\JWT;
-
 
 function handlePost($conn, $data, $request) {
-    global $secret_key;
-    global $issuer;
 
     if ($request === '/conduit/api/users'){
         // Validation
@@ -34,22 +30,11 @@ function handlePost($conn, $data, $request) {
 
         if ($conn->query($query)) {
             $user_id = $conn->insert_id;
-            $payload = [
-                "iss" => $issuer,
-                "iat" => time(),
-                "exp" => time() + (60 * 60), // 1 hour
-                "data" => [
-                    "id" => $user_id,
-                    "email" => $email
-                ]
-            ];
-            $jwt = JWT::encode($payload, $secret_key, 'HS256');
             echo json_encode([
                 "user" => [
                     "id" => $user_id,
                     "username" => $username,
                     "email" => $email,
-                    "token" => $jwt
                 ]
             ]);
         } else {
