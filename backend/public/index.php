@@ -15,11 +15,12 @@ include '../config/config.php'; // include configuration settings here
 include '../models/user/index.php'; // include user model functions here
 
 define("USER", 'user');
+define('PROFILE', 'profiles');
 define("ARTICLE", 'article');
 define("COMMENT", 'comment');
 define("TAG", 'tag');
 
-if (str_contains($request, USER)) {
+if (str_contains($request, USER) || str_contains($request, PROFILE)) {
     user($data, $method, $request); // Call the user function to handle user-related requests (registration and login)
 } 
 else {
