@@ -14,10 +14,10 @@ include '../config/db_connection.php'; // initialize database connection here
 include '../config/config.php'; // include configuration settings here
 include '../models/user/index.php'; // include user model functions here
 
-define("USER", '/user');
-define("ARTICLE", '/article');
-define("COMMENT", '/comment');
-define("TAG", '/tag');
+define("USER", 'user');
+define("ARTICLE", 'article');
+define("COMMENT", 'comment');
+define("TAG", 'tag');
 
 if (str_contains($request, USER)) {
     user($data, $method, $request); // Call the user function to handle user-related requests (registration and login)
