@@ -24,8 +24,7 @@ function user($data, $method, $request) {
                 login($data); // Call the login function for user authentication
             } else if (str_contains($request, REGISTER_ENDPOINT)) {
                 create($data); // Call the register function for user registration
-            }
-            if(str_contains($request, FOLLOW_ENDPOINT)){
+            } else if (str_contains($request, FOLLOW_ENDPOINT)) {
                 $params = getPathParms($request);
                 follow_user($params);
             }
@@ -38,8 +37,7 @@ function user($data, $method, $request) {
         case 'GET':
             if (str_contains($request, USER_ENDPOINT)) {
                 getCurrentUser(); // Call the function to get the current authenticated user's information
-                }
-            if(str_contains($request, PROFILES_ENDPOINT)){
+            } else if (str_contains($request, PROFILES_ENDPOINT)) {
                 $params = getPathParms($request);
                 getProfile($params);
             }
@@ -53,13 +51,13 @@ function user($data, $method, $request) {
 function getPathParms($request){
     $path = parse_url($request, PHP_URL_PATH);
     $segments = explode('/', trim($path, '/'));
-    $username = $segments[3];
-    $username = urldecode($username);
     
-    if (!$username) {
+    if (!isset($segments[3]) || empty($segments[3])) {
         http_response_code(400);
         echo json_encode(["error" => "Username is required"]);
         exit;
     }
+    
+    $username = urldecode($segments[3]);
     return $username;
 }
