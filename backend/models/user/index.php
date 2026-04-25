@@ -7,12 +7,14 @@ include 'login.php'; // Include the login function for user authentication
 include 'update.php'; // Include the update function for updating user information
 include 'read.php'; // Include the read function for retrieving user information
 include 'profiles.php'; // Include the profiles function for retrieving user full profile information
+include 'follow.php'; // Include the follow function
 
 define("API_BASE_URL", "/conduit/api/");
 define("REGISTER_ENDPOINT", API_BASE_URL . "users");
 define('LOGIN_ENDPOINT', API_BASE_URL . 'users/login');
 define('USER_ENDPOINT', API_BASE_URL . 'user'); // Endpoint to get current authenticated user's information
 define('PROFILES_ENDPOINT', API_BASE_URL . 'profiles');
+define('FOLLOW_ENDPOINT', 'follow');
 
 function user($data, $method, $request) {
 
@@ -22,6 +24,10 @@ function user($data, $method, $request) {
                 login($data); // Call the login function for user authentication
             } else if (str_contains($request, REGISTER_ENDPOINT)) {
                 create($data); // Call the register function for user registration
+            }
+            if(str_contains($request, FOLLOW_ENDPOINT)){
+                $params = getPathParms($request);
+                follow_user($params);
             }
             break;
         case 'PUT':
