@@ -30,11 +30,11 @@ function user($data, $method, $request) {
             }
             break;
         case 'GET':
-            $params = getPathParms($request);
             if (str_contains($request, USER_ENDPOINT)) {
                 getCurrentUser(); // Call the function to get the current authenticated user's information
-            }
-            if(str_contains($request, PROFILES_ENDPOINT . '/' . $params)){
+                }
+            if(str_contains($request, PROFILES_ENDPOINT)){
+                $params = getPathParms($request);
                 getProfile($params);
             }
             break;
