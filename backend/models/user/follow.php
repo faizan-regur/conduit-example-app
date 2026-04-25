@@ -30,7 +30,7 @@ function follow_user($params){
 
         $usernameToFollow = $params;
 
-        // Fetch the ID of the user to follow from the database
+        // Prevent user from following themselves
         $stmt = $conn->prepare("SELECT id FROM users WHERE username = ?");
         $stmt->bind_param("s", $usernameToFollow);
         $stmt->execute();
@@ -44,6 +44,27 @@ function follow_user($params){
 
         $userToFollow = $result->fetch_assoc();
         $userToFollowId = $userToFollow['id'];
+
+        // Check if user is trying to follow themselves
+        if ($userId === $userToFollowId) {
+            http_response_code(400);
+            echo json_encode(["message" => "You cannot follow yourself"]);
+            return;
+        }
+
+        // Check if already following
+        $checkStmt = $conn->prepare("SELECT id FROM follows WHERE follower_id = ? AND following_id = ?");
+        $checkStmt->bind_param("ii", $userId, $userToFollowId);
+        $checkStmt->execute();
+        $checkResult = $checkStmt->get_result();
+
+        if ($checkResult->num_rows > 0) {
+            http_response_code(409);
+            echo json_encode(["message" => "Already following this user"]);
+            $checkStmt->close();
+            return;
+        }
+        $checkStmt->close();
 
         // Insert a new record into the followers table
         $stmt = $conn->prepare("INSERT INTO follows (follower_id, following_id) VALUES (?, ?)");
@@ -64,8 +85,8 @@ function follow_user($params){
                 echo json_encode(["error" => "Database query failed"]);
                 exit;
             }
-            // Return full profile
-            getProfile($usernameToFollow);
+            echo json_encode(["message" => "User followed successfully"]);
+            $stmt->close();
         } else {
             http_response_code(500);
             echo json_encode(["message" => "Failed to follow user"]);
