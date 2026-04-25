@@ -26,7 +26,7 @@ function getCurrentUser() {
     // Validate the token and extract user information
     try {
         $decoded = JWT::decode($token, new Key($secret_key, 'HS256'));
-        $userId = $decoded->sub;
+        $userId = $decoded->user_id;
 
         // Fetch user information from the database
         $stmt = $conn->prepare("SELECT id, username, email FROM users WHERE id = ?");
