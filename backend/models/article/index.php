@@ -3,11 +3,13 @@
 include 'create.php'; // Include the article model functions
 include 'read.php';
 
+define('ARTICLE_DIR',  '/articles'); // Define a constant for the article directory
+
 function article($data, $method, $request) {
 
     switch ($method) {
         case 'POST':
-            if (str_contains($request, '/articles')) {
+            if (str_contains($request, ARTICLE_DIR)) {
                 createArticle($data); // Call the function to create a new article
             } else {
                 http_response_code(404);
@@ -15,7 +17,7 @@ function article($data, $method, $request) {
             }
             break;
         case 'GET':
-            if (str_contains($request, '/articles')) {
+            if (str_contains($request, ARTICLE_DIR)) {
                 readArticle(); // Call the function to read articles
             } else {
                 http_response_code(404);

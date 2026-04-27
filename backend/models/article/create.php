@@ -12,6 +12,7 @@ function createArticle($data) {
     $title = $data['article']['title'];
     $description = $data['article']['description'];
     $body = $data['article']['body'];
+    $slug = strtolower(str_replace(' ', '-', $title)); // Generate a slug from the title
 
     // Check if the article already exists in the database
     $stmt = $conn->prepare("SELECT articleId FROM articles WHERE title = ?");
@@ -26,8 +27,8 @@ function createArticle($data) {
     }
 
     // prepare and execute the SQL statement to insert the new article into the database
-    $stmt = $conn->prepare("INSERT INTO articles (title, description, body) VALUES (?, ?, ?)");
-    $stmt->bind_param("sss", $title, $description, $body);
+    $stmt = $conn->prepare("INSERT INTO articles (title, description, body, slug) VALUES (?, ?, ?, ?)");
+    $stmt->bind_param("ssss", $title, $description, $body, $slug);
     if ($stmt->execute()) {
         $article_id = $stmt->insert_id; // Get the ID of the newly created article
         echo json_encode([
@@ -35,7 +36,8 @@ function createArticle($data) {
                 "id" => $article_id,
                 "title" => $title,
                 "description" => $description,
-                "body" => $body
+                "body" => $body,
+                'slug' => $slug
             ]
         ]);
     } else {
