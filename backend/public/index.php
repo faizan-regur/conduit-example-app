@@ -13,6 +13,7 @@ header("Content-Type: application/json"); // Set the content type to JSON for al
 include '../config/db_connection.php'; // initialize database connection here
 include '../config/config.php'; // include configuration settings here
 include '../models/user/index.php'; // include user model functions here
+include '../models/article/index.php'; // include user model functions here
 
 define("USER", 'user');
 define('PROFILE', 'profiles');
@@ -22,7 +23,9 @@ define("TAG", 'tag');
 
 if (str_contains($request, USER) || str_contains($request, PROFILE)) {
     user($data, $method, $request); // Call the user function to handle user-related requests (registration and login)
-} 
+}else if (str_contains($request, ARTICLE)) {
+    article($data, $method, $request); // Call the article function to handle article-related requests (creating, retrieving, updating, and deleting articles)
+}
 else {
     http_response_code(404);
     echo json_encode(["message" => "Endpoint not found"]); // Return a JSON response if the endpoint is not found
